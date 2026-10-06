@@ -9,6 +9,12 @@
         .table-gamer { background-color: #1e1e1e; color: white; border: 1px solid #00ffcc; }
         .btn-neon { background-color: transparent; color: #00ffcc; border: 2px solid #00ffcc; box-shadow: 0 0 10px #00ffcc; transition: 0.3s; }
         .btn-neon:hover { background-color: #00ffcc; color: #000; box-shadow: 0 0 20px #00ffcc; }
+        .btn-delete { background-color: #1e1e1e; border: 2px solid #ff3b5c; color: #ff3b5c; font-weight: bold; border-radius: 8px; padding: 9px 18px; transition: all 0.25s ease; text-decoration: none; display: inline-block; box-shadow: 0 0 6px rgba(255, 59, 92, 0.45), 0 0 15px rgba(255, 59, 92, 0.15);}
+        .btn-delete:hover { background-color: #ff3b5c; color: #121212; box-shadow: 0 0 8px #ff3b5c, 0 0 20px #ff3b5c, 0 0 35px rgba(255, 59, 92, 0.45); transform: translateY(-2px); }
+        .btn-action { background-color: #1e1e1e; border: 2px solid #00ffcc; color: #00ffcc; font-weight: bold; border-radius: 8px; padding: 9px 18px; transition: all 0.25s ease; box-shadow: 0 0 6px rgba(0, 255, 204, 0.45), 0 0 15px rgba(0, 255, 204, 0.15); text-decoration: none; display: inline-block; }
+        .btn-action:hover { background-color: #00ffcc; color: #121212; box-shadow: 0 0 8px #00ffcc, 0 0 20px #00ffcc, 0 0 35px rgba(0, 255, 204, 0.45); transform: translateY(-2px); }
+        .btn-action:active,
+        .btn-delete:active { transform: translateY(0); box-shadow: 0 0 5px currentColor; }
     </style>
 </head>
 <body class="container mt-5">
@@ -48,7 +54,7 @@
                             <span class="text-muted" style="font-size: 0.8em;">Sin imagen</span>
                         {% endif %}
                     </td>
-                    <td class="fw-bold text-light">{{ juego.titulo }}</td>
+                    <td class="fw-bold text-dark">{{ juego.titulo }}</td>
                     <td><span class="badge bg-secondary">{{ juego.plataforma }}</span></td>
                     <td class="text-success fw-bold">${{ juego.precio }}</td>
                     <td>
@@ -59,6 +65,10 @@
                         {% endif %}
                     </td>
                     <!-- : Agrega aqui la etiqueta <td> con los botones de Editar y Eliminar -->
+                    
+                    <td><a href="{% url 'editar_juego' juego.id%}" class="btn-action">Editar</a></td>
+                    <td><a href="{% url 'ver_juego' juego.id%}" class="btn-action">Ver</a></td>
+                    <td><a href="{% url 'eliminar_juego' juego.id%}" class="btn-delete">Eliminar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
