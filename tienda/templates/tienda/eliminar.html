@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Eliminar Juego</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #121212;
+            color: white;
+            min-height: 100vh;
+        }
+
+
+        /* TARJETA PRINCIPAL */
+
+        .card-gamer {
+            background-color: #1e1e1e;
+            border: 1px solid #ff0055;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+
+            border-radius: 15px;
+        }
+
+
+        /* TITULO */
+
+        .titulo {
+            color: #ff4444;
+            text-shadow: 0 0 10px #ff4444;
+        }
+
+
+        /* MENSAJE */
+
+        .mensaje {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+
+        .advertencia {
+            color: #999;
+            font-size: 14px;
+        }
+
+
+        /* TARJETA PEQUEÑA DEL JUEGO */
+
+        .juego-card {
+
+            background-color: #252525;
+
+            border: 1px solid #444;
+
+            border-left: 4px solid #ff0055;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            margin-top: 25px;
+
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.15);
+
+            text-align: left;
+        }
+
+
+        .juego-titulo {
+
+            color: #00ffcc;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+
+        .juego-dato {
+
+            color: #bbb;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .juego-dato strong {
+
+            color: white;
+        }
+
+
+        /* PORTADA */
+
+        .portada {
+
+            width: 80px;
+            height: 110px;
+
+            object-fit: cover;
+
+            border-radius: 7px;
+
+            border: 1px solid #00ffcc;
+
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+        }
+
+
+        .sin-imagen {
+
+            width: 80px;
+            height: 110px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            background-color: #181818;
+
+            border: 1px solid #444;
+
+            border-radius: 7px;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+
+        /* BOTONES */
+
+        .btn-eliminar {
+
+            background-color: transparent;
+
+            color: #ff0055;
+
+            border: 2px solid #ff0055;
+
+            transition: 0.3s;
+        }
+
+
+        .btn-eliminar:hover {
+
+            background-color: #ff0055;
+
+            color: white;
+
+            box-shadow: 0 0 15px #ff0055;
+        }
+
+
+        .btn-cancelar {
+
+            background-color: transparent;
+
+            color: #aaa;
+
+            border: 2px solid #555;
+
+            transition: 0.3s;
+        }
+
+
+        .btn-cancelar:hover {
+
+            background-color: #333;
+
+            color: white;
+
+            border-color: #aaa;
+        }
+
+    </style>
+
+</head>
+
+
+<body class="container py-5 d-flex justify-content-center align-items-center">
+
+
+    <div
+        class="card card-gamer p-4 p-md-5 w-100 text-center"
+        style="max-width: 550px;"
+    >
+
+
+        <!-- MENSAJE PRINCIPAL -->
+
+        <div class="mensaje">
+
+            ¿Eliminar este juego?
+
+        </div>
+
+
+        <p class="advertencia mt-2">
+
+            Esta acción no se puede deshacer.
+
+        </p>
+
+
+        <!-- INFORMACION DEL JUEGO -->
+
+        <div class="juego-card">
+
+            <div class="row align-items-center g-3">
+
+
+                <!-- PORTADA -->
+
+                <div class="col-auto">
+
+                    {% if juego.portada %}
+
+                        <img
+                            src="{{ juego.portada.url }}"
+                            alt="Portada de {{ juego.titulo }}"
+                            class="portada"
+                        >
+
+                    {% else %}
+
+                        <div class="sin-imagen">
+
+                            🖼️<br>
+                            Sin imagen
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DATOS -->
+
+                <div class="col">
+
+                    <div class="juego-titulo">
+
+                        {{ juego.titulo }}
+
+                    </div>
+
+
+                    <div class="juego-dato">
+
+                        <strong>Plataforma:</strong>
+                        {{ juego.plataforma }}
+
+                    </div>
+
+
+                    <div class="juego-dato">
+
+                        <strong>Precio:</strong>
+                        ${{ juego.precio }}
+
+                    </div>
+
+
+                    <div class="juego-dato">
+
+                        <strong>Stock:</strong>
+                        {{ juego.stock }}
+
+                    </div>
+
+
+                    <div class="juego-dato">
+
+                        <strong>ID:</strong>
+                        #{{ juego.id }}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- BOTONES SI / NO -->
+
+        <div class="row g-3 mt-4">
+
+
+            <!-- SI -->
+
+            <div class="col-6">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-eliminar w-100 py-2 fw-bold"
+                    >
+
+                        Sí
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- NO -->
+
+            <div class="col-6">
+
+                <a
+                    href="{% url 'listar_juegos' %}"
+                    class="btn btn-cancelar w-100 py-2 fw-bold"
+                >
+
+                    No
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

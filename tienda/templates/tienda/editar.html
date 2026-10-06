@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Juego</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background-color: #121212;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* TARJETA PRINCIPAL */
+
+        .card-gamer {
+            background-color: #1e1e1e;
+            border: 1px solid #ff0055;
+            box-shadow: 0 0 15px #ff0055;
+        }
+
+
+        /* TITULOS */
+
+        .titulo-rojo {
+            color: #ff4444;
+            text-shadow: 0 0 10px #ff4444;
+        }
+
+        .titulo-azul {
+            color: #4444ff;
+            text-shadow: 0 0 10px #4444ff;
+        }
+
+
+        /* LABELS */
+
+        .form-label-custom {
+            color: #00ffcc;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        /* INPUTS */
+
+        .form-control-custom {
+            background-color: #2b2b2b !important;
+            color: white !important;
+
+            border: 1px solid #ff0055 !important;
+
+            padding: 11px;
+            width: 100%;
+
+            border-radius: 7px;
+
+            transition: 0.3s;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+
+            border-color: #00ffcc !important;
+
+            box-shadow:
+                0 0 8px #00ffcc,
+                0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+
+        /* CUADRO DRAG AND DROP */
+
+        .drop-zone {
+
+            min-height: 170px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 25px;
+
+            background-color: #202020;
+
+            border: 2px dashed #ff0055;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .drop-zone:hover {
+
+            background-color: #292929;
+
+            border-color: #00ffcc;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 204, 0.35);
+
+        }
+
+
+        /* CUANDO ESTAMOS ARRASTRANDO */
+
+        .drop-zone.drag-over {
+
+            background-color: #292929;
+
+            border-color: #00ffcc;
+
+            box-shadow:
+                0 0 15px #00ffcc,
+                inset 0 0 15px rgba(0, 255, 204, 0.15);
+
+            transform: scale(1.02);
+        }
+
+
+        /* ICONO */
+
+        .upload-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* TEXTO */
+
+        .drop-title {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: white;
+        }
+
+        .drop-subtitle {
+
+            color: #999;
+
+            font-size: 14px;
+
+            margin-top: 5px;
+        }
+
+
+        /* BOTON VISUAL DE ARCHIVO */
+
+        .upload-button {
+
+            margin-top: 14px;
+
+            padding: 9px 20px;
+
+            border: 1px solid #ff0055;
+
+            border-radius: 7px;
+
+            color: #ff0055;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .drop-zone:hover .upload-button {
+
+            background-color: #ff0055;
+
+            color: white;
+
+            box-shadow: 0 0 12px #ff0055;
+        }
+
+
+        /* NOMBRE ARCHIVO */
+
+        .file-name {
+
+            margin-top: 10px;
+
+            text-align: center;
+
+            color: #999;
+
+            font-size: 14px;
+
+            word-break: break-word;
+        }
+
+
+        /* CONTENEDORES DE PREVIEW */
+
+        .preview-container {
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            padding: 15px;
+
+            background-color: #151515;
+
+            border: 1px solid #00ffcc;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 204, 0.35);
+        }
+
+
+        /* IMAGEN */
+
+        .portada-preview {
+
+            width: 220px;
+
+            max-width: 100%;
+
+            max-height: 300px;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+
+            display: block;
+
+            border: 2px solid #00ffcc;
+
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.35);
+        }
+
+
+        /* TEXTO SIN IMAGEN */
+
+        .sin-imagen {
+
+            text-align: center;
+
+            padding: 35px 20px;
+
+            background-color: #181818;
+
+            border: 1px solid #444;
+
+            border-radius: 12px;
+
+            color: #777;
+        }
+
+        .sin-imagen span {
+
+            font-size: 40px;
+        }
+
+
+        /* BOTON GUARDAR */
+
+        .btn-neon-danger {
+
+            background-color: transparent;
+
+            color: #ff0055;
+
+            border: 2px solid #ff0055;
+
+            transition: 0.3s;
+        }
+
+        .btn-neon-danger:hover {
+
+            background-color: #ff0055;
+
+            color: white;
+
+            box-shadow: 0 0 20px #ff0055;
+        }
+
+
+        /* BOTON CANCELAR SELECCION */
+
+        .btn-cancel-image {
+
+            background-color: transparent;
+
+            color: #aaa;
+
+            border: 1px solid #555;
+
+            transition: 0.3s;
+        }
+
+        .btn-cancel-image:hover {
+
+            color: white;
+
+            border-color: #ff0055;
+
+            background-color: #25141b;
+        }
+
+
+        /* BOTON VOLVER */
+
+        .btn-back {
+
+            color: #bbb;
+
+            text-decoration: none;
+
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+
+            color: #00ffcc;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="container mt-5 d-flex justify-content-center">
+
+
+    <div class="card card-gamer p-5 w-100" style="max-width: 550px;">
+
+
+        <!-- TITULO -->
+
+        <h2 class="mb-2 text-center fw-bold">
+
+            <span class="titulo-rojo">
+                Editar
+            </span>
+
+            <span class="titulo-azul">
+                Juego
+            </span>
+
+            <span style="
+                font-size: 0.8em;
+                color: #ff0055;
+            ">
+                𒉭
+            </span>
+
+        </h2>
+
+
+        <p class="text-center text-muted mb-4 fst-italic">
+
+            Modifica los datos de tu videojuego...
+
+        </p>
+
+
+        <!-- FORMULARIO -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- TITULO -->
+
+            <div class="mb-3">
+
+                <label
+                    for="titulo"
+                    class="form-label-custom"
+                >
+                    Título:
+                </label>
+
+                <input
+                    type="text"
+                    id="titulo"
+                    name="titulo"
+                    class="form-control form-control-custom"
+                    value="{{ juego.titulo }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PLATAFORMA -->
+
+            <div class="mb-3">
+
+                <label
+                    for="plataforma"
+                    class="form-label-custom"
+                >
+                    Plataforma:
+                </label>
+
+                <input
+                    type="text"
+                    id="plataforma"
+                    name="plataforma"
+                    class="form-control form-control-custom"
+                    value="{{ juego.plataforma }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PRECIO -->
+
+            <div class="mb-3">
+
+                <label
+                    for="precio"
+                    class="form-label-custom"
+                >
+                    Precio:
+                </label>
+
+                <input
+                    type="number"
+                    id="precio"
+                    name="precio"
+                    class="form-control form-control-custom"
+                    value="{{ juego.precio }}"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+
+            <!-- STOCK -->
+
+            <div class="mb-3">
+
+                <label
+                    for="stock"
+                    class="form-label-custom"
+                >
+                    Stock:
+                </label>
+
+                <input
+                    type="number"
+                    id="stock"
+                    name="stock"
+                    class="form-control form-control-custom"
+                    value="{{ juego.stock }}"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+
+            <!-- NUEVA PORTADA -->
+
+            <div class="mb-4">
+
+                <label class="form-label-custom">
+
+                    Nueva portada:
+
+                </label>
+
+
+                <!--
+                    Este input estará oculto.
+                    El cuadro de abajo será el que
+                    usaremos para seleccionar o arrastrar.
+                -->
+
+                <input
+                    type="file"
+                    id="portada"
+                    name="portada"
+                    accept="image/*"
+                    hidden
+                >
+
+
+                <!-- ZONA DRAG & DROP -->
+
+                <label
+                    for="portada"
+                    id="dropZone"
+                    class="drop-zone"
+                >
+
+                    <div class="upload-icon">
+                        📁
+                    </div>
+
+                    <div class="drop-title">
+
+                        Arrastra una imagen aquí
+
+                    </div>
+
+                    <div class="drop-subtitle">
+
+                        o selecciónala desde tu computador
+
+                    </div>
+
+                    <div class="upload-button">
+
+                        Elegir archivo
+
+                    </div>
+
+                </label>
+
+
+                <!-- NOMBRE DEL ARCHIVO -->
+
+                <p
+                    id="nombreArchivo"
+                    class="file-name"
+                >
+                    Ningún archivo seleccionado
+                </p>
+
+            </div>
+
+
+            <!-- VISTA PREVIA DE LA NUEVA IMAGEN -->
+
+            <div
+                id="previewContainer"
+                class="mb-4"
+                style="display: none;"
+            >
+
+                <label class="form-label-custom">
+
+                    Nueva portada seleccionada:
+
+                </label>
+
+
+                <div class="preview-container">
+
+                    <img
+                        id="previewImagen"
+                        src=""
+                        alt="Vista previa de la nueva portada"
+                        class="portada-preview"
+                    >
+
+                </div>
+
+
+                <!-- BOTON PARA DESHACER LA NUEVA SELECCION -->
+
+                <button
+                    type="button"
+                    id="cancelarImagen"
+                    class="btn btn-cancel-image w-100 mt-3"
+                >
+
+                    ✕ Quitar nueva imagen
+
+                </button>
+
+            </div>
+
+
+            <!-- PORTADA ACTUAL -->
+
+            <div class="mb-4">
+
+                <label class="form-label-custom">
+
+                    Portada actual:
+
+                </label>
+
+
+                {% if juego.portada %}
+
+                    <div class="preview-container">
+
+                        <img
+                            src="{{ juego.portada.url }}"
+                            alt="Portada actual de {{ juego.titulo }}"
+                            class="portada-preview"
+                        >
+
+                    </div>
+
+                {% else %}
+
+                    <div class="sin-imagen">
+
+                        <span>
+                            🖼️
+                        </span>
+
+                        <p class="mb-0 mt-2">
+
+                            Este juego no tiene portada
+
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- BOTON GUARDAR -->
+
+            <button
+                type="submit"
+                class="btn btn-neon-danger w-100 fw-bold py-2"
+            >
+
+                ORA ORA ORA! (Guardar cambios)
+
+            </button>
+
+
+        </form>
+
+
+        <!-- VOLVER -->
+
+        <div class="mt-4 text-center">
+
+            <a
+                href="{% url 'listar_juegos' %}"
+                class="btn-back"
+            >
+
+                &larr; Volver a la base
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        const inputPortada =
+            document.getElementById('portada');
+
+        const dropZone =
+            document.getElementById('dropZone');
+
+        const previewContainer =
+            document.getElementById('previewContainer');
+
+        const previewImagen =
+            document.getElementById('previewImagen');
+
+        const nombreArchivo =
+            document.getElementById('nombreArchivo');
+
+        const cancelarImagen =
+            document.getElementById('cancelarImagen');
+
+
+        /*
+         * Guarda la URL temporal utilizada
+         * para mostrar la imagen.
+         */
+
+        let imagenTemporal = null;
+
+
+        /*
+         * Procesa la imagen seleccionada.
+         *
+         * Esta función se utiliza tanto cuando
+         * elegimos un archivo como cuando
+         * arrastramos uno.
+         */
+
+        function mostrarVistaPrevia(archivo) {
+
+            if (!archivo) {
+                return;
+            }
+
+
+            /* Comprobar que sea una imagen */
+
+            if (!archivo.type.startsWith('image/')) {
+
+                nombreArchivo.textContent =
+                    'El archivo seleccionado no es una imagen.';
+
+                previewContainer.style.display = 'none';
+
+                inputPortada.value = '';
+
+                return;
+            }
+
+
+            /*
+             * Liberar la URL anterior
+             * para evitar ocupar memoria.
+             */
+
+            if (imagenTemporal) {
+
+                URL.revokeObjectURL(imagenTemporal);
+
+            }
+
+
+            /*
+             * Crear una URL temporal
+             * para visualizar la imagen.
+             */
+
+            imagenTemporal =
+                URL.createObjectURL(archivo);
+
+
+            /*
+             * Colocar la imagen
+             * en la vista previa.
+             */
+
+            previewImagen.src =
+                imagenTemporal;
+
+
+            /*
+             * Mostrar el nombre.
+             */
+
+            nombreArchivo.textContent =
+                archivo.name;
+
+
+            /*
+             * Mostrar la sección
+             * de vista previa.
+             */
+
+            previewContainer.style.display =
+                'block';
+
+        }
+
+
+        /*
+         * Cuando el usuario selecciona
+         * normalmente mediante el explorador.
+         */
+
+        inputPortada.addEventListener(
+            'change',
+            function () {
+
+                const archivo =
+                    this.files[0];
+
+                mostrarVistaPrevia(archivo);
+
+            }
+        );
+
+
+        /*
+         * Cuando el usuario arrastra
+         * una imagen sobre el cuadro.
+         */
+
+        dropZone.addEventListener(
+            'dragover',
+            function (event) {
+
+                event.preventDefault();
+
+                dropZone.classList.add(
+                    'drag-over'
+                );
+
+            }
+        );
+
+
+        /*
+         * Cuando el archivo deja
+         * de estar sobre el cuadro.
+         */
+
+        dropZone.addEventListener(
+            'dragleave',
+            function () {
+
+                dropZone.classList.remove(
+                    'drag-over'
+                );
+
+            }
+        );
+
+
+        /*
+         * Cuando el usuario suelta
+         * el archivo.
+         */
+
+        dropZone.addEventListener(
+            'drop',
+            function (event) {
+
+                event.preventDefault();
+
+                dropZone.classList.remove(
+                    'drag-over'
+                );
+
+
+                const archivo =
+                    event.dataTransfer.files[0];
+
+
+                if (!archivo) {
+                    return;
+                }
+
+
+                /*
+                 * Colocar el archivo arrastrado
+                 * dentro del input.
+                 *
+                 * Así el archivo también será
+                 * enviado al servidor cuando
+                 * hagamos submit.
+                 */
+
+                const transferencia =
+                    new DataTransfer();
+
+                transferencia.items.add(
+                    archivo
+                );
+
+                inputPortada.files =
+                    transferencia.files;
+
+
+                mostrarVistaPrevia(archivo);
+
+            }
+        );
+
+
+        /*
+         * Quitar la nueva imagen seleccionada.
+         */
+
+        cancelarImagen.addEventListener(
+            'click',
+            function () {
+
+                inputPortada.value = '';
+
+                previewImagen.src = '';
+
+                previewContainer.style.display =
+                    'none';
+
+                nombreArchivo.textContent =
+                    'Ningún archivo seleccionado';
+
+
+                if (imagenTemporal) {
+
+                    URL.revokeObjectURL(
+                        imagenTemporal
+                    );
+
+                    imagenTemporal = null;
+
+                }
+
+            }
+        );
+
+
+        /*
+         * Limpiar la URL temporal
+         * cuando se abandona la página.
+         */
+
+        window.addEventListener(
+            'beforeunload',
+            function () {
+
+                if (imagenTemporal) {
+
+                    URL.revokeObjectURL(
+                        imagenTemporal
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

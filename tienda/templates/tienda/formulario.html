@@ -2,50 +2,893 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Añadir Juego</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
     <style>
-        body { background-color: #121212; color: white; }
-        .card-gamer { background-color: #1e1e1e; border: 1px solid #ff0055; box-shadow: 0 0 15px #ff0055; }
-        .btn-neon-danger { background-color: transparent; color: #ff0055; border: 2px solid #ff0055; transition: 0.3s; }
-        .btn-neon-danger:hover { background-color: #ff0055; color: white; box-shadow: 0 0 20px #ff0055; }
-        
-        form p label { color: #00ffcc !important; font-weight: bold; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 1px;}
-        form p input, form p select { background-color: #2b2b2b !important; color: #ffffff !important; border: 1px solid #ff0055 !important; padding: 10px; width: 100%; border-radius: 5px; }
-        form p input:focus, form p select:focus { outline: none; box-shadow: 0 0 8px #ff0055; border-color: #ff0055; }
-        
-        form p input[type="file"] {
-            padding: 30px 20px;
-            border: 2px dashed #ff0055 !important;
-            color: #ff0055 !important;
-            text-align: center;
-            cursor: pointer;
+        body {
+            background-color: #121212;
+            color: white;
+        }
+
+        .card-gamer {
+            background-color: #1e1e1e;
+            border: 1px solid #ff0055;
+            box-shadow: 0 0 15px #ff0055;
+        }
+
+        .btn-neon-danger {
+            background-color: transparent;
+            color: #ff0055;
+            border: 2px solid #ff0055;
             transition: 0.3s;
         }
-        form p input[type="file"]:hover {
-            background-color: #3a3a3a !important;
+
+        .btn-neon-danger:hover {
+            background-color: #ff0055;
+            color: white;
+            box-shadow: 0 0 20px #ff0055;
+        }
+
+        form p label {
+            color: #00ffcc !important;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        form p input,
+        form p select {
+            background-color: #2b2b2b !important;
+            color: #ffffff !important;
+            border: 1px solid #ff0055 !important;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        form p input:focus,
+        form p select:focus {
+            outline: none;
+            box-shadow: 0 0 8px #ff0055;
+            border-color: #ff0055;
+        }
+
+
+        /* ==============================
+           ZONA DE PORTADA
+           ============================== */
+
+        .drop-zone {
+            width: 100%;
+            min-height: 220px;
+
+            background-color: #202020;
+
+            border: 2px dashed #ff0055;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+
+            text-align: center;
+
+            transition: 0.3s;
+        }
+
+        .drop-zone:hover {
+            background-color: #292929;
+            border-color: #00ffcc;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 204, 0.35);
+        }
+
+        .drop-zone.drag-over {
+            background-color: #292929;
+
+            border-color: #00ffcc;
+
+            box-shadow:
+                0 0 15px #00ffcc,
+                inset 0 0 15px rgba(0, 255, 204, 0.15);
+
+            transform: scale(1.01);
+        }
+
+
+        /* CONTENIDO DEL CUADRO */
+
+        .drop-content {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* ICONO */
+
+        .drop-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+
+            filter:
+                drop-shadow(0 0 6px rgba(0, 255, 204, 0.5));
+        }
+
+
+        /* TITULO DEL CUADRO */
+
+        .drop-title {
+            color: white;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* TEXTO SECUNDARIO */
+
+        .drop-text {
+            color: #888;
+
+            font-size: 14px;
+
+            max-width: 320px;
+
+            line-height: 1.4;
+        }
+
+
+        /* DIVISOR */
+
+        .drop-divider {
+            width: 75%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            margin: 15px 0;
+        }
+
+        .drop-divider span {
+            flex: 1;
+
+            height: 1px;
+
+            background-color: #444;
+        }
+
+        .drop-divider small {
+            color: #777;
+
+            font-weight: bold;
+        }
+
+
+        /* BOTON ELEGIR ARCHIVO */
+
+        .upload-button {
+            display: inline-block;
+
+            background-color: transparent;
+
+            color: #ff0055;
+
+            border: 2px solid #ff0055;
+
+            border-radius: 7px;
+
+            padding: 9px 22px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .upload-button:hover {
+            background-color: #ff0055;
+
+            color: white;
+
+            box-shadow: 0 0 12px #ff0055;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* NOMBRE DEL ARCHIVO */
+
+        .file-name {
+            text-align: center;
+
+            color: #888;
+
+            font-size: 14px;
+
+            margin-top: 10px;
+
+            word-break: break-word;
+        }
+
+
+        /* ==============================
+           VISTA PREVIA
+           ============================== */
+
+        .preview-container {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            background-color: #181818;
+
+            border: 1px solid #00ffcc;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 204, 0.25);
+        }
+
+        .preview-title {
+            color: #00ffcc;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 12px;
+        }
+
+        .preview-container img {
+            max-width: 200px;
+            max-height: 280px;
+
+            border-radius: 10px;
+
+            border: 2px solid #00ffcc;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 204, 0.35);
+
+            object-fit: cover;
+        }
+
+
+        /* BOTON QUITAR IMAGEN */
+
+        .btn-remove-image {
+            margin-top: 12px;
+
+            background-color: transparent;
+
+            color: #ff0055;
+
+            border: 1px solid #ff0055;
+
+            border-radius: 6px;
+
+            padding: 7px 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .btn-remove-image:hover {
+            background-color: #ff0055;
+
+            color: white;
+
+            box-shadow: 0 0 10px #ff0055;
         }
     </style>
 </head>
+
+
 <body class="container mt-5 d-flex justify-content-center">
-    <div class="card card-gamer p-5 w-100" style="max-width: 500px;">
+
+
+    <div
+        class="card card-gamer p-5 w-100"
+        style="max-width: 500px;"
+    >
+
+
+        <!-- TITULO -->
+
         <h2 class="mb-2 text-center fw-bold">
-            <span style="color: #ff4444; text-shadow: 0 0 10px #ff4444;">Insertar</span> <span style="color: #4444ff; text-shadow: 0 0 10px #4444ff;">Juego</span>
-            <span style="font-size: 0.8em; color: #ff0055; text-shadow: none;">𒉭</span>
+
+            <span
+                style="
+                    color: #ff4444;
+                    text-shadow: 0 0 10px #ff4444;
+                "
+            >
+                Insertar
+            </span>
+
+            <span
+                style="
+                    color: #4444ff;
+                    text-shadow: 0 0 10px #4444ff;
+                "
+            >
+                Juego
+            </span>
+
+            <span
+                style="
+                    font-size: 0.8em;
+                    color: #ff0055;
+                    text-shadow: none;
+                "
+            >
+                𒉭
+            </span>
+
         </h2>
-        <p class="text-center text-muted mb-4 fst-italic">El Stand de este juego es muy poderoso...</p>
-        
-        <form method="POST" enctype="multipart/form-data">
+
+
+        <p class="text-center text-muted mb-4 fst-italic">
+            El Stand de este juego es muy poderoso...
+        </p>
+
+
+        <!-- FORMULARIO -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
             {% csrf_token %}
+
+
             <div class="text-start">
-                {{ form.as_p }}
+
+
+                <!-- TITULO -->
+
+                <p>
+                    {{ form.titulo.label_tag }}
+                    {{ form.titulo }}
+                </p>
+
+
+                <!-- PLATAFORMA -->
+
+                <p>
+                    {{ form.plataforma.label_tag }}
+                    {{ form.plataforma }}
+                </p>
+
+
+                <!-- PRECIO -->
+
+                <p>
+                    {{ form.precio.label_tag }}
+                    {{ form.precio }}
+                </p>
+
+
+                <!-- STOCK -->
+
+                <p>
+                    {{ form.stock.label_tag }}
+                    {{ form.stock }}
+                </p>
+
+
+                <!-- ==============================
+                     PORTADA
+                     ============================== -->
+
+                <p>
+
+                    <label for="id_portada">
+                        Portada
+                    </label>
+
+
+                    <!-- INPUT REAL -->
+
+                    <input
+                        type="file"
+                        id="id_portada"
+                        name="portada"
+                        accept="image/*"
+                        hidden
+                    >
+
+
+                    <!-- ZONA DRAG & DROP -->
+
+                    <div
+                        id="dropZone"
+                        class="drop-zone"
+                    >
+
+                        <div class="drop-content">
+
+
+                            <!-- ICONO -->
+
+                            <div class="drop-icon">
+                                🖼️
+                            </div>
+
+
+                            <!-- TITULO -->
+
+                            <div class="drop-title">
+                                Arrastra tu portada aquí
+                            </div>
+
+
+                            <!-- TEXTO -->
+
+                            <div class="drop-text">
+                                También puedes seleccionarla desde tu computador
+                            </div>
+
+
+                            <!-- DIVISOR -->
+
+                            <div class="drop-divider">
+
+                                <span></span>
+
+                                <small>O</small>
+
+                                <span></span>
+
+                            </div>
+
+
+                            <!-- BOTON -->
+
+                            <label
+                                for="id_portada"
+                                class="upload-button"
+                            >
+                                📁 Elegir archivo
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOMBRE DEL ARCHIVO -->
+
+                    <div
+                        id="fileName"
+                        class="file-name"
+                    >
+                        Ningún archivo seleccionado
+                    </div>
+
+
+                    <!-- VISTA PREVIA -->
+
+                    <div
+                        id="previewContainer"
+                        class="preview-container"
+                    >
+
+                        <div class="preview-title">
+                            Vista previa
+                        </div>
+
+
+                        <img
+                            id="previewImage"
+                            src=""
+                            alt="Vista previa de la portada"
+                        >
+
+
+                        <br>
+
+
+                        <button
+                            type="button"
+                            id="removeImage"
+                            class="btn-remove-image"
+                        >
+                            ✕ Quitar imagen
+                        </button>
+
+                    </div>
+
+                </p>
+
             </div>
-            <button type="submit" class="btn btn-neon-danger w-100 fw-bold py-2 mt-3">ORA ORA ORA! (Guardar)</button>
+
+
+            <!-- BOTON GUARDAR -->
+
+            <button
+                type="submit"
+                class="btn btn-neon-danger w-100 fw-bold py-2 mt-3"
+            >
+                ORA ORA ORA! (Guardar)
+            </button>
+
         </form>
-        
+
+
+        <!-- VOLVER -->
+
         <div class="mt-4 text-center">
-            <a href="{% url 'listar_juegos' %}" class="text-decoration-none" style="color: #bbb;">&larr; Volver a la base</a>
+
+            <a
+                href="{% url 'listar_juegos' %}"
+                class="text-decoration-none"
+                style="color: #bbb;"
+            >
+                &larr; Volver a la base
+            </a>
+
         </div>
+
     </div>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+         ============================== -->
+
+    <script>
+
+
+        const inputPortada =
+            document.getElementById('id_portada');
+
+
+        const dropZone =
+            document.getElementById('dropZone');
+
+
+        const previewContainer =
+            document.getElementById('previewContainer');
+
+
+        const previewImage =
+            document.getElementById('previewImage');
+
+
+        const fileName =
+            document.getElementById('fileName');
+
+
+        const removeImage =
+            document.getElementById('removeImage');
+
+
+        /*
+         * Guarda la URL temporal
+         * utilizada para mostrar
+         * la imagen.
+         */
+
+        let temporaryImageUrl = null;
+
+
+        /*
+         * Procesar una imagen.
+         *
+         * Esta función se utiliza
+         * tanto para seleccionar
+         * como para arrastrar.
+         */
+
+        function processImage(file) {
+
+
+            /* No hay archivo */
+
+            if (!file) {
+                return;
+            }
+
+
+            /* Comprobar si es imagen */
+
+            if (!file.type.startsWith('image/')) {
+
+                fileName.textContent =
+                    'El archivo seleccionado no es una imagen.';
+
+                inputPortada.value = '';
+
+                previewContainer.style.display =
+                    'none';
+
+                return;
+            }
+
+
+            /*
+             * Liberar URL anterior.
+             */
+
+            if (temporaryImageUrl) {
+
+                URL.revokeObjectURL(
+                    temporaryImageUrl
+                );
+
+            }
+
+
+            /*
+             * Crear URL temporal
+             * para mostrar la imagen.
+             */
+
+            temporaryImageUrl =
+                URL.createObjectURL(file);
+
+
+            /*
+             * Mostrar la imagen.
+             */
+
+            previewImage.src =
+                temporaryImageUrl;
+
+
+            /*
+             * Mostrar nombre.
+             */
+
+            fileName.textContent =
+                file.name;
+
+
+            /*
+             * Mostrar preview.
+
+             */
+
+            previewContainer.style.display =
+                'block';
+
+        }
+
+
+        /*
+         * ===================================
+         * SELECCIONAR ARCHIVO
+         * ===================================
+         */
+
+        inputPortada.addEventListener(
+            'change',
+            function () {
+
+                const file =
+                    this.files[0];
+
+                processImage(file);
+
+            }
+        );
+
+
+        /*
+         * ===================================
+         * DRAG OVER
+         * ===================================
+         */
+
+        dropZone.addEventListener(
+            'dragover',
+            function (event) {
+
+                event.preventDefault();
+
+                dropZone.classList.add(
+                    'drag-over'
+                );
+
+            }
+        );
+
+
+        /*
+         * ===================================
+         * DRAG LEAVE
+         * ===================================
+         */
+
+        dropZone.addEventListener(
+            'dragleave',
+            function () {
+
+                dropZone.classList.remove(
+                    'drag-over'
+                );
+
+            }
+        );
+
+
+        /*
+         * ===================================
+         * DROP
+         * ===================================
+         */
+
+        dropZone.addEventListener(
+            'drop',
+            function (event) {
+
+                event.preventDefault();
+
+                dropZone.classList.remove(
+                    'drag-over'
+                );
+
+
+                /*
+                 * Obtener archivo
+                 * arrastrado.
+                 */
+
+                const file =
+                    event.dataTransfer.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                /*
+                 * Colocar el archivo
+                 * arrastrado dentro del
+                 * input real.
+                 */
+
+                const dataTransfer =
+                    new DataTransfer();
+
+
+                dataTransfer.items.add(file);
+
+
+                inputPortada.files =
+                    dataTransfer.files;
+
+
+                /*
+                 * Mostrar vista previa.
+                 */
+
+                processImage(file);
+
+            }
+        );
+
+
+        /*
+         * ===================================
+         * QUITAR IMAGEN
+         * ===================================
+         */
+
+        removeImage.addEventListener(
+            'click',
+            function () {
+
+
+                /*
+                 * Vaciar el input.
+                 */
+
+                inputPortada.value = '';
+
+
+                /*
+                 * Quitar imagen.
+                 */
+
+                previewImage.src = '';
+
+
+                /*
+                 * Restablecer texto.
+                 */
+
+                fileName.textContent =
+                    'Ningún archivo seleccionado';
+
+
+                /*
+                 * Ocultar preview.
+                 */
+
+                previewContainer.style.display =
+                    'none';
+
+
+                /*
+                 * Liberar memoria.
+                 */
+
+                if (temporaryImageUrl) {
+
+                    URL.revokeObjectURL(
+                        temporaryImageUrl
+                    );
+
+                    temporaryImageUrl = null;
+
+                }
+
+            }
+        );
+
+
+        /*
+         * ===================================
+         * LIMPIAR URL TEMPORAL
+         * ===================================
+         */
+
+        window.addEventListener(
+            'beforeunload',
+            function () {
+
+                if (temporaryImageUrl) {
+
+                    URL.revokeObjectURL(
+                        temporaryImageUrl
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
 </body>
+
 </html>
