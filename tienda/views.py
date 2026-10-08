@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Videojuego
 from .forms import VideojuegoForm
-#Necesitas importar get_object_or_404 aqui arriba para el Update y Delete
+
 
 def listar_juegos(request):
     juegos = Videojuego.objects.all()
@@ -17,7 +17,7 @@ def crear_juego(request):
         form = VideojuegoForm()
     return render(request, 'tienda/formulario.html', {'form': form})
  
-# Crea aqui abajo las funciones def editar_juego(request, id): y def eliminar_juego(request, id):
+
 def editar_juego(request, id):
     juego = Videojuego.objects.get(id=id)
 
