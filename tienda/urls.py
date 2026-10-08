@@ -8,5 +8,5 @@ urlpatterns = [
     path('vista/<int:id>/',views.ver_juego, name='ver_juego'),
     path('eliminar/<int:id>/',views.eliminar_juego,name='eliminar_juego'),
     
-    # Agrega aqui las rutas para 'editar_juego' y 'eliminar_juego'
+
 ]

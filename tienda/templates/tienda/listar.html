@@ -40,8 +40,6 @@
                     <th>Plataforma</th>
                     <th>Precio</th>
                     <th>Stock</th>
-                    <!-- : Descomenta la linea de abajo para tu columna -->
-                    <!-- <th class="text-warning">Acciones (Tu turno)</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +62,7 @@
                             <span class="badge bg-danger">Agotado</span>
                         {% endif %}
                     </td>
-                    <!-- : Agrega aqui la etiqueta <td> con los botones de Editar y Eliminar -->
+                    
                     
                     <td><a href="{% url 'editar_juego' juego.id%}" class="btn-action">Editar</a></td>
                     <td><a href="{% url 'ver_juego' juego.id%}" class="btn-action">Ver</a></td>
@@ -72,7 +70,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <!-- : Si agregas tu columna, cambia este colspan a 6 -->
+                    
                     <td colspan="5" class="text-center text-muted py-4">No hay juegos en la base de datos.</td>
                 </tr>
                 {% endfor %}
