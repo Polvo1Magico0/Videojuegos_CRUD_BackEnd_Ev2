@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',            # Motor de la API
+    'rest_framework.authtoken',  # Generador de tokens
     'tienda'
 ]
 
@@ -131,3 +133,11 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+LOGIN_REDIRECT_URL = 'listar_juegos'
+LOGOUT_REDIRECT_URL = 'listar_juegos'

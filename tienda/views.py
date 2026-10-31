@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import Videojuego
 from .forms import VideojuegoForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def listar_juegos(request):
     juegos = Videojuego.objects.all()
     return render(request, 'tienda/listar.html', {'juegos': juegos})
 
+@login_required
 def crear_juego(request):
     if request.method == 'POST':
         form = VideojuegoForm(request.POST, request.FILES)
@@ -18,6 +21,7 @@ def crear_juego(request):
     return render(request, 'tienda/formulario.html', {'form': form})
  
 
+@login_required
 def editar_juego(request, id):
     juego = Videojuego.objects.get(id=id)
 
@@ -37,14 +41,16 @@ def editar_juego(request, id):
     return render(request, 'tienda/editar.html', {
         'juego': juego
     })
-    
+
+
 def ver_juego(request,id):
     juego = Videojuego.objects.get(id=id)
     
     return render(request, 'tienda/vista.html', {
         'juego': juego
     })
-    
+
+@login_required    
 def eliminar_juego(request,id):
     juego = Videojuego.objects.get(id=id)
     
