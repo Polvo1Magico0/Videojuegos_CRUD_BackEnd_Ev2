@@ -62,11 +62,6 @@
             border-color: #ff0055;
         }
 
-
-        /* ==============================
-           ZONA DE PORTADA
-           ============================== */
-
         .drop-zone {
             width: 100%;
             min-height: 220px;
@@ -521,9 +516,7 @@
                             alt="Vista previa de la portada"
                         >
 
-
                         <br>
-
 
                         <button
                             type="button"
@@ -532,15 +525,9 @@
                         >
                             ✕ Quitar imagen
                         </button>
-
                     </div>
-
                 </p>
-
             </div>
-
-
-            <!-- BOTON GUARDAR -->
 
             <button
                 type="submit"
@@ -551,9 +538,6 @@
 
         </form>
 
-
-        <!-- VOLVER -->
-
         <div class="mt-4 text-center">
 
             <a
@@ -563,71 +547,35 @@
             >
                 &larr; Volver a la base
             </a>
-
         </div>
-
     </div>
-
-
-    <!-- ==============================
-         JAVASCRIPT
-         ============================== -->
-
     <script>
-
 
         const inputPortada =
             document.getElementById('id_portada');
 
-
         const dropZone =
             document.getElementById('dropZone');
-
 
         const previewContainer =
             document.getElementById('previewContainer');
 
-
         const previewImage =
             document.getElementById('previewImage');
-
 
         const fileName =
             document.getElementById('fileName');
 
-
         const removeImage =
             document.getElementById('removeImage');
 
-
-        /*
-         * Guarda la URL temporal
-         * utilizada para mostrar
-         * la imagen.
-         */
-
         let temporaryImageUrl = null;
 
-
-        /*
-         * Procesar una imagen.
-         *
-         * Esta función se utiliza
-         * tanto para seleccionar
-         * como para arrastrar.
-         */
-
         function processImage(file) {
-
-
-            /* No hay archivo */
 
             if (!file) {
                 return;
             }
-
-
-            /* Comprobar si es imagen */
 
             if (!file.type.startsWith('image/')) {
 
@@ -642,61 +590,25 @@
                 return;
             }
 
-
-            /*
-             * Liberar URL anterior.
-             */
-
             if (temporaryImageUrl) {
 
                 URL.revokeObjectURL(
                     temporaryImageUrl
                 );
-
             }
-
-
-            /*
-             * Crear URL temporal
-             * para mostrar la imagen.
-             */
 
             temporaryImageUrl =
                 URL.createObjectURL(file);
 
-
-            /*
-             * Mostrar la imagen.
-             */
-
             previewImage.src =
                 temporaryImageUrl;
-
-
-            /*
-             * Mostrar nombre.
-             */
 
             fileName.textContent =
                 file.name;
 
-
-            /*
-             * Mostrar preview.
-
-             */
-
             previewContainer.style.display =
                 'block';
-
         }
-
-
-        /*
-         * ===================================
-         * SELECCIONAR ARCHIVO
-         * ===================================
-         */
 
         inputPortada.addEventListener(
             'change',
@@ -706,16 +618,8 @@
                     this.files[0];
 
                 processImage(file);
-
             }
         );
-
-
-        /*
-         * ===================================
-         * DRAG OVER
-         * ===================================
-         */
 
         dropZone.addEventListener(
             'dragover',
@@ -726,16 +630,8 @@
                 dropZone.classList.add(
                     'drag-over'
                 );
-
             }
         );
-
-
-        /*
-         * ===================================
-         * DRAG LEAVE
-         * ===================================
-         */
 
         dropZone.addEventListener(
             'dragleave',
@@ -744,16 +640,8 @@
                 dropZone.classList.remove(
                     'drag-over'
                 );
-
             }
         );
-
-
-        /*
-         * ===================================
-         * DROP
-         * ===================================
-         */
 
         dropZone.addEventListener(
             'drop',
@@ -765,92 +653,38 @@
                     'drag-over'
                 );
 
-
-                /*
-                 * Obtener archivo
-                 * arrastrado.
-                 */
-
                 const file =
                     event.dataTransfer.files[0];
-
 
                 if (!file) {
                     return;
                 }
 
-
-                /*
-                 * Colocar el archivo
-                 * arrastrado dentro del
-                 * input real.
-                 */
-
                 const dataTransfer =
                     new DataTransfer();
 
-
                 dataTransfer.items.add(file);
-
 
                 inputPortada.files =
                     dataTransfer.files;
 
-
-                /*
-                 * Mostrar vista previa.
-                 */
-
                 processImage(file);
-
             }
         );
-
-
-        /*
-         * ===================================
-         * QUITAR IMAGEN
-         * ===================================
-         */
 
         removeImage.addEventListener(
             'click',
             function () {
 
-
-                /*
-                 * Vaciar el input.
-                 */
-
                 inputPortada.value = '';
 
-
-                /*
-                 * Quitar imagen.
-                 */
-
                 previewImage.src = '';
-
-
-                /*
-                 * Restablecer texto.
-                 */
 
                 fileName.textContent =
                     'Ningún archivo seleccionado';
 
-
-                /*
-                 * Ocultar preview.
-                 */
-
                 previewContainer.style.display =
                     'none';
-
-
-                /*
-                 * Liberar memoria.
-                 */
 
                 if (temporaryImageUrl) {
 
@@ -859,18 +693,9 @@
                     );
 
                     temporaryImageUrl = null;
-
                 }
-
             }
         );
-
-
-        /*
-         * ===================================
-         * LIMPIAR URL TEMPORAL
-         * ===================================
-         */
 
         window.addEventListener(
             'beforeunload',
@@ -881,14 +706,9 @@
                     URL.revokeObjectURL(
                         temporaryImageUrl
                     );
-
                 }
-
             }
         );
-
     </script>
-
 </body>
-
 </html>
