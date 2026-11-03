@@ -5,12 +5,18 @@ from .models import Videojuego
 class VideojuegoForm(forms.ModelForm):
     precio = forms.IntegerField(
         min_value=0,
-        widget=forms.NumberInput(attrs={'min': 0})
+        max_value=1000000,
+        widget=forms.NumberInput(attrs={
+            'min': 0,
+            'max': 1000000
+        })
     )
 
     stock = forms.IntegerField(
         min_value=0,
-        widget=forms.NumberInput(attrs={'min': 0})
+        widget=forms.NumberInput(attrs={
+            'min': 0
+        })
     )
 
     class Meta:

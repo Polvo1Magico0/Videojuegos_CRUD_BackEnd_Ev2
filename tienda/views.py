@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Videojuego
 from .forms import VideojuegoForm
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -32,9 +33,24 @@ def editar_juego(request, id):
     juego = Videojuego.objects.get(id=id)
 
     if request.method == 'POST':
+        
+        try:
+            precio = int(request.POST.get('precio'))
+        except (ValueError, TypeError):
+            return render(request, 'tienda/editar.html', {
+                'juego': juego,
+                'error': 'El precio debe ser un numero entero'
+            })
+
+        if precio < 0 or precio > 1000000:
+            return render(request, 'tienda/editar.html', {
+                'juego': juego,
+                'error': 'El precio debe estar entre 0 y 1000000'
+            })
+        
         juego.titulo = request.POST['titulo']
         juego.plataforma = request.POST['plataforma']
-        juego.precio = request.POST['precio']
+        juego.precio = precio
         juego.stock = request.POST['stock']
 
         if request.FILES.get('portada'):
@@ -88,8 +104,8 @@ class VideojuegoApiView(APIView):
                 'id': juego.id,
                 'titulo': juego.titulo,
                 'plataforma': juego.plataforma,
-                'precio': juego.precio,
-                'stock': juego.stock,
+                'precio': juego.precio_mostrar,
+                'stock': juego.stock_mostrar,
                 'portada': request.build_absolute_uri(juego.portada.url)
                     if juego.portada else None
             })
@@ -130,9 +146,9 @@ class VideojuegoApiView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Validar números
-        if not isinstance(precio, int) or isinstance(precio, bool) or precio < 0:
+        if not isinstance(precio, int) or isinstance(precio, bool) or precio < 0 or precio > 1000000:
             return Response({
-                'error': 'El precio debe ser un numero entero mayor o igual a cero'
+                'error': 'El precio debe ser un numero entero entre 0 y 1000000'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         if not isinstance(stock, int) or isinstance(stock, bool) or stock < 0:
@@ -141,12 +157,20 @@ class VideojuegoApiView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Crear y guardar en la BD
-        juego = Videojuego.objects.create(
+        juego = Videojuego(
             titulo=titulo.strip(),
             plataforma=plataforma.strip(),
             precio=precio,
             stock=stock
-        )
+        )       
+        try:
+            juego.full_clean()
+            juego.save()
+        except ValidationError as error:
+            return Response({
+                'error': error.message_dict
+            }, status=status.HTTP_400_BAD_REQUEST)
+
 
         # Devolver respuesta
         return Response({
@@ -232,9 +256,9 @@ class VideojuegoDetalleApiView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Validar números
-        if not isinstance(precio, int) or isinstance(precio, bool) or precio < 0:
+        if not isinstance(precio, int) or isinstance(precio, bool) or precio < 0 or precio > 1000000:
             return Response({
-                'error': 'El precio debe ser un numero entero mayor o igual a cero'
+                'error': 'El precio debe ser un numero entero entre 0 y 1000000'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         if not isinstance(stock, int) or isinstance(stock, bool) or stock < 0:
@@ -248,7 +272,14 @@ class VideojuegoDetalleApiView(APIView):
         juego.precio = precio
         juego.stock = stock
 
-        juego.save()
+        try:
+            juego.full_clean()
+            juego.save()
+
+        except ValidationError as error:
+            return Response({
+                'error': error.message_dict
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         juego.refresh_from_db()
 

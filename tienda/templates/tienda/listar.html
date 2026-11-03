@@ -60,10 +60,10 @@
                     </td>
                     <td class="fw-bold text-dark">{{ juego.titulo }}</td>
                     <td><span class="badge bg-secondary">{{ juego.plataforma }}</span></td>
-                    <td class="text-success fw-bold">${{ juego.precio }}</td>
+                    <td class="text-success fw-bold">${{ juego.precio_mostrar }}</td>
                     <td>
                         {% if juego.stock > 0 %}
-                            <span class="badge bg-primary">{{ juego.stock }} disp.</span>
+                            <span class="badge bg-primary">{{ juego.stock_mostrar }} disp.</span>
                         {% else %}
                             <span class="badge bg-danger">Agotado</span>
                         {% endif %}
